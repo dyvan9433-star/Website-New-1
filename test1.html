@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pro Card UI</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  background: #f1f5f9;
+}
+
+/* ===== LAYOUT ===== */
+.container {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar {
+  width: 240px;
+  background: #1e293b;
+  color: #fff;
+  padding: 20px;
+}
+
+.sidebar h2 {
+  margin-bottom: 15px;
+}
+
+.sidebar input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  margin-bottom: 15px;
+}
+
+.sidebar ul {
+  list-style: none;
+}
+
+.sidebar li {
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.sidebar li:hover,
+.sidebar li.active {
+  background: #3b82f6;
+}
+
+/* ===== CARDS ===== */
+.cards {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  padding: 25px;
+}
+
+/* Responsive */
+@media (max-width: 1000px) {
+  .cards { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 700px) {
+  .cards { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 500px) {
+  .cards { grid-template-columns: 1fr; }
+}
+
+/* ===== CARD ===== */
+.card-wrapper {
+  position: relative;
+  opacity: 0;
+  transform: translateY(40px);
+  animation: fadeUp 0.6s forwards;
+}
+
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.card {
+  background: #fff;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+  cursor: pointer;
+  position: relative;
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+}
+
+.card:active {
+  transform: scale(0.97);
+}
+
+.card img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+}
+
+.card-content {
+  padding: 12px;
+}
+
+.card h4 {
+  margin-bottom: 5px;
+}
+
+.card p {
+  color: gray;
+  font-size: 13px;
+}
+
+/* Badge */
+.badge {
+  position: absolute;
+  background: #3b82f6;
+  color: #fff;
+  padding: 4px 8px;
+  font-size: 11px;
+  border-radius: 6px;
+  top: 10px;
+  left: 10px;
+}
+
+/* Ripple effect */
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  transform: scale(0);
+  background: rgba(0,0,0,0.2);
+  animation: ripple 0.6s linear;
+}
+
+@keyframes ripple {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <h2>Menu</h2>
+    <input type="text" id="search" placeholder="Search...">
+
+    <ul id="menu">
+      <li class="active" onclick="setActive(this); filterCards('all')">All</li>
+      <li onclick="setActive(this); filterCards('Name1')">Name1</li>
+      <li onclick="setActive(this); filterCards('Name2')">Name2</li>
+      <li onclick="setActive(this); filterCards('Name3')">Name3</li>
+      <li onclick="setActive(this); filterCards('Name4')">Name4</li>
+    </ul>
+  </div>
+
+  <!-- CARDS -->
+  <div class="cards" id="cardContainer"></div>
+
+</div>
+
+<script>
+const cardsData = [
+  { title: "Product 1", name: "Name1", img: "https://picsum.photos/300?1" },
+  { title: "Product 2", name: "Name1", img: "https://picsum.photos/300?2" },
+  { title: "Product 3", name: "Name3", img: "https://picsum.photos/300?3" },
+  { title: "Product 4", name: "Name1", img: "https://picsum.photos/300?4" },
+  { title: "Product 5", name: "Name2", img: "https://picsum.photos/300?5" },
+  { title: "Product 6", name: "Name2", img: "https://picsum.photos/300?6" },
+  { title: "Product 7", name: "Name3", img: "https://picsum.photos/300?7" },
+  { title: "Product 8", name: "Name1", img: "https://picsum.photos/300?8" }
+];
+
+const container = document.getElementById("cardContainer");
+
+function displayCards(data) {
+  container.innerHTML = "";
+  data.forEach((card, index) => {
+    container.innerHTML += `
+      <div class="card-wrapper" style="animation-delay:${index * 0.1}s">
+        <div class="badge">${card.name}</div>
+        <div class="card" onclick="rippleEffect(event)">
+          <img src="${card.img}">
+          <div class="card-content">
+            <h4>${card.title}</h4>
+            <p>${card.name}</p>
+          </div>
+        </div>
+      </div>
+    `;
+  });
+}
+
+/* Ripple */
+function rippleEffect(e) {
+  const card = e.currentTarget;
+  const circle = document.createElement("span");
+  circle.classList.add("ripple");
+
+  const rect = card.getBoundingClientRect();
+  circle.style.left = e.clientX - rect.left + "px";
+  circle.style.top = e.clientY - rect.top + "px";
+
+  card.appendChild(circle);
+
+  setTimeout(() => circle.remove(), 600);
+}
+
+/* FILTER */
+function filterCards(name) {
+  const filtered = name === "all"
+    ? cardsData
+    : cardsData.filter(c => c.name === name);
+
+  displayCards(filtered);
+}
+
+/* ACTIVE MENU */
+function setActive(el) {
+  document.querySelectorAll("#menu li").forEach(li => li.classList.remove("active"));
+  el.classList.add("active");
+}
+
+/* SEARCH */
+document.getElementById("search").addEventListener("input", function () {
+  const value = this.value.toLowerCase();
+  const filtered = cardsData.filter(c =>
+    c.title.toLowerCase().includes(value) ||
+    c.name.toLowerCase().includes(value)
+  );
+  displayCards(filtered);
+});
+
+/* INIT */
+displayCards(cardsData);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3 Cards</title>
+  <style>
+    * {
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  margin: 0;
+  padding: 20px;
+  background: #f2f2f2;
+}
+
+/* Grid 3 equal */
+.container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+
+/* Image inside card */
+.card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover; /* មិនឲ្យរូបបែក */
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+.card img {
+  transition: transform 0.3s ease;
+}
+
+.card:hover img {
+  transform: scale(1.05);
+}
+
+/* Card */
+.card {
+  background: #fff;
+  padding: 15px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Text truncate (CSS) */
+.text {
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* show 2 lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.text.expanded {
+  display: block;
+}
+
+/* Button */
+.btn-toggle {
+  margin-top: 10px;
+  border: none;
+  background: #007bff;
+  color: white;
+  padding: 6px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* delay animetion */
+.card:nth-child(1) { transition-delay: 0.1s; }
+.card:nth-child(2) { transition-delay: 0.3s; }
+.card:nth-child(3) { transition-delay: 0.5s; }
+/* default hidden */
+.card {
+  opacity: 0;
+  transform: translateX(-50px); /* ចាប់ផ្តើមពីឆ្វេង */
+  transition: all 0.6s ease;
+}
+
+/* active show */
+.card.show {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+
+
+
+/* Responsive */
+@media (max-width: 900px) {
+  .container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 500px) {
+  .container {
+    grid-template-columns: 1fr;
+  }
+}
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Card 1 -->
+  <div class="card">
+    <img src="https://picsum.photos/400/200" alt="image">
+    <h3>Card 1</h3>
+    <p class="text">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+    </p>
+    <button class="btn-toggle">More</button>
+  </div>
+
+  <!-- Card 2 -->
+  <div class="card">
+    <img src="https://picsum.photos/401/200" alt="image">
+    <h3>Card 2</h3>
+    <p class="text">
+      Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+    </p>
+    <button class="btn-toggle">More</button>
+  </div>
+
+  <!-- Card 3 -->
+  <div class="card">
+    <img src="https://picsum.photos/402/200" alt="image">
+    <h3>Card 3</h3>
+    <p class="text">
+      Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta.
+    </p>
+    <button class="btn-toggle">More</button>
+  </div>
+
+</div>
+
+<script>
+document.querySelectorAll(".btn-toggle").forEach(button => {
+  button.addEventListener("click", () => {
+    const text = button.previousElementSibling;
+
+    text.classList.toggle("expanded");
+
+    if (text.classList.contains("expanded")) {
+      button.textContent = "Less";
+    } else {
+      button.textContent = "More";
+    }
+  });
+});
+
+
+const cards = document.querySelectorAll(".card");
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add("show");
+    }
+  });
+}, {
+  threshold: 0.2
+});
+
+cards.forEach(card => {
+  observer.observe(card);
+});
+</script>
+</body>
+</html>

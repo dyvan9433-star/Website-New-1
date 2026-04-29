@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Feature Banner with Image</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f9f9f9;
+      color: #333;
+    }
+
+    /* Top image section */
+    .hero {
+      background: #0077cc;
+      text-align: center;
+      padding: 2rem;
+      color: #fff;
+    }
+
+    .hero img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+
+    .hero h1 {
+      margin-top: 1rem;
+      font-size: 2rem;
+    }
+
+    /* Features section */
+    .features {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      padding: 3rem;
+      max-width: 1200px;
+      margin: auto;
+      position: relative;
+    }
+
+    .feature {
+      background: #fff;
+      border-radius: 8px;
+      padding: 2rem;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      transition: transform 0.3s ease;
+    }
+
+    .feature:hover {
+      transform: translateY(-5px);
+    }
+
+    .feature-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .feature h3 {
+      margin: 0.5rem 0;
+      font-size: 1.4rem;
+      color: #222;
+    }
+
+    .feature p {
+      font-size: 0.95rem;
+      line-height: 1.5;
+      margin-bottom: 1rem;
+    }
+
+    .feature a {
+      text-decoration: none;
+      font-weight: bold;
+      color: #0077cc;
+    }
+
+    /* Highlight + overlap effect for 3rd element */
+    .feature:nth-child(3) {
+      position: relative;
+      top: -30px;   /* រុញឡើង */
+      z-index: 10;  /* ជាន់លើ */
+      box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+      border: 2px solid #2ca44f;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .features {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .features {
+        grid-template-columns: 1fr;
+        padding: 1.5rem;
+      }
+      .feature:nth-child(3) {
+        top: 0; /* នៅលើ mobile មិន overlap */
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Top image section -->
+<section class="hero">
+  <img src="your-image.png" alt="Creative banner image">
+  <h1>All you need is a 'what if…'</h1>
+</section>
+
+<!-- Features section -->
+<section class="features">
+  <div class="feature">
+    <div class="feature-icon" style="color:#0077cc;">👥</div>
+    <h3>Free for everyone</h3>
+    <p>No downloads. No strings attached. Start creating from the first click.</p>
+    <a href="#">Start Tinkering ›</a>
+  </div>
+
+  <div class="feature">
+    <div class="feature-icon" style="color:#7b3fe4;">💻</div>
+    <h3>Learn by doing</h3>
+    <p>Hands-on projects build confidence, persistence, and problem-solving skills.</p>
+    <a href="#">Explore Projects ›</a>
+  </div>
+
+  <div class="feature">
+    <div class="feature-icon" style="color:#2ca44f;">🛡️</div>
+    <h3>Safe for all ages</h3>
+    <p>Ad-free and kidSAFE-certified to ensure privacy and a safe learning environment.</p>
+    <a href="#">Privacy & Security ›</a>
+  </div>
+</section>
+
+</body>
+</html>
